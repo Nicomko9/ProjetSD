@@ -4,6 +4,7 @@ import java.io.File;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import domain.Graph;
 import domain.SAXHandler;
 
 public class Main {
@@ -14,8 +15,9 @@ public class Main {
 			SAXParser saxParser = factory.newSAXParser();
 			SAXHandler userhandler = new SAXHandler();
 			saxParser.parse(inputFile, userhandler);
-			Graph g = userhandler.getGraph();
-			g.calculerItineraireMiniminantDistance("BRU", "PPT", "output.xml");
+			// Graph g = userhandler.getGraph();
+			Graph g = new Graph();
+			g.calculerItineraireMinimisantDistance("BRU", "PPT", "output.xml");
 			g.calculerItineraireMinimisantNombreVol("BRU", "PPT", "output2.xml");
 		} catch (Exception e) {
 			e.printStackTrace();
