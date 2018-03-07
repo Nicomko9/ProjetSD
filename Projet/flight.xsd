@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:simpleType name="iataAirport">
+		<xs:restriction base="xs:ID">
+			<xs:pattern value="([0-9]|[A-Z]){3}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="iataAirline">
+		<xs:restriction base="xs:ID">
+			<xs:pattern value="_([0-9]|[A-Z]){2}" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="airline">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="iata" type="iataAirline" use="required" />
+				<xs:attribute name="country" type="xs:string" />
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:element name="flight">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="airports">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="airport" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="longitude" type="xs:decimal" />
+										<xs:element name="latitude" type="xs:decimal" />
+									</xs:sequence>
+									<xs:attribute name="iata" type="iataAirport" use="required" />
+									<xs:attribute name="name" type="xs:string" use="required" />
+									<xs:attribute name="city" type="xs:string" />
+									<xs:attribute name="country" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="airlines">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="airline" maxOccurs="unbounded" type="airline" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="routes">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="route" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="airline" type="xs:IDREF" use="required" />
+									<xs:attribute name="source" type="xs:IDREF" use="required" />
+									<xs:attribute name="destination" type="xs:IDREF"
+										use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
