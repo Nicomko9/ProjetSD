@@ -5,7 +5,7 @@ public class Airline {
 	private String country;
 	private String name;
 	
-	public Airline(String iata, String country, String name) {
+	public Airline(String iata, String country) {
 		
 		this.iata = iata;
 		this.country = country;
@@ -21,6 +21,10 @@ public class Airline {
 	}
 	public String getName() {
 		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 	

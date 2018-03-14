@@ -15,13 +15,12 @@ public class Airport {
 	
 	private Set<Route> routes;
 
-	public Airport(String iata, String name, String city, String country, double latitude, double longitude) {
+	public Airport(String iata, String name, String city, String country) {
 		this.iata = iata;
 		this.name = name;
 		this.city = city;
 		this.country = country;
-		this.latitude = latitude;
-		this.longitude = longitude;
+	
 		this.routes = new HashSet<Route>();
 	}
 
@@ -44,9 +43,16 @@ public class Airport {
 	public double getLatitude() {
 		return latitude;
 	}
+	public void setLatitude(double lat) {
+		 latitude = lat;
+	}
 
 	public double getLongitude() {
 		return longitude;
+	}
+
+	public void setLongitude(double lon) {
+		longitude = lon;
 	}
 
 	public Set<Route> getRoutes() {
@@ -56,5 +62,5 @@ public class Airport {
 	public boolean addRoute(Route route) {
 		return this.routes.add(route);
 	}
-	
+		
 }
