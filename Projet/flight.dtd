@@ -1,0 +1,25 @@
+<!ELEMENT longitude (#PCDATA)>
+<!ELEMENT latitude (#PCDATA)>
+
+<!ELEMENT airport (longitude, latitude)>
+<!ATTLIST airport iata ID #REQUIRED>
+<!ATTLIST airport name CDATA #REQUIRED>
+<!ATTLIST airport city CDATA #IMPLIED>
+<!ATTLIST airport country CDATA #REQUIRED>
+
+<!ELEMENT airports (airport)+>
+
+<!ELEMENT airline (#PCDATA)>
+<!ATTLIST airline iata ID #REQUIRED>
+<!ATTLIST airline country CDATA #REQUIRED>
+
+<!ELEMENT airlines (airline)+>
+
+<!ELEMENT route EMPTY>
+<!ATTLIST route airline IDREF #REQUIRED>
+<!ATTLIST route source IDREF #REQUIRED>
+<!ATTLIST route destination IDREF #REQUIRED>
+
+<!ELEMENT routes (route)+>
+
+<!ELEMENT flight (airports, airlines, routes)>
