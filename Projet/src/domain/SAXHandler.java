@@ -93,6 +93,10 @@ public class SAXHandler extends DefaultHandler {
 		
 		
 	}
+	
+	public Graph getGraph() {
+		return this.graph;
+	}
 
 
 }
