@@ -2,7 +2,6 @@ package domain;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class Graph {
@@ -35,22 +34,25 @@ public class Graph {
 		this.dijkstra(src, dest);
 	}
 	
-	public boolean bfsSearch(String src, String dest, Map<String, String> enfants) {
-		ArrayDeque<String> queue = new ArrayDeque<String>(airports.size());
+	public boolean bfsSearch(String src, String dest, Map<String, String> chemin) {
+		ArrayDeque<String> queue = new ArrayDeque<String>();
+		Map<String, String> enfants = new HashMap<String, String>();
 		queue.add(src);
 		enfants.put(src, null);
 		
 		do {
+			System.out.println("First : " + queue.peekFirst());
 			src = queue.removeFirst();
-			Airport current = airports.get(src);
+			// System.out.println("Queue : " + queue.getFirst());
+			System.out.println("Size : " + queue.size());
+			Airport current = this.airports.get(src);
 			// System.out.println("Current : " + current.getIata());
 			for (Route out : current.getRoutes()) {
-				System.out.println("Dest -> " + out.getDestination().getIata());
 				if (!enfants.containsKey(out.getDestination().getIata())) {
 					enfants.put(out.getDestination().getIata(), src);
 					queue.addLast(out.getDestination().getIata());
 				}
-				if (out.getDestination().getIata() == dest)
+				if (out.getDestination().getIata().equals(dest))
 					return true;
 			}
 			
