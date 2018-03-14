@@ -19,7 +19,8 @@ public class Graph {
 	
 	public void calculerItineraireMinimisantNombreVol(String src, String dest, String outputFile){
 		// BFS
-		this.bfsSearch(src, dest);
+		Map<String, String> enfants = new HashMap<String, String>();
+		this.bfsSearch(src, dest, enfants);
 	}
 	
 	public void calculerItineraireMinimisantDistance(String src, String dest, String outputFile){
@@ -27,15 +28,17 @@ public class Graph {
 		this.dijkstra(src, dest);
 	}
 	
-	public boolean bfsSearch(String src, String dest) {
+	public boolean bfsSearch(String src, String dest, Map<String, String> enfants) {
 		//TODO
 		ArrayDeque<String> queue = new ArrayDeque<String>();
 		queue.add(src);
+		enfants.put(src, null);
 		
 		do {
 			src = queue.removeFirst();
 			Airport current = airports.get(src);
 			for (Route out : current.getRoutes()) {
+				enfants.put(out.getSource().getIata(), src);
 				
 			}
 			
@@ -62,9 +65,22 @@ public class Graph {
 		}
 		else if (obj instanceof Route) {
 			Airport src = ((Route) obj).getSource();
-			src.addRoute((Route) obj);
+			Airport airport = airports.get(src.getIata());
+			airport.addRoute((Route) obj);
 		}
 		
 		return true;
 	}
+	
+	public Airline getAirline(String iata) {
+		return this.airlines.get(iata);
+	}
+	
+	public Airport getAirport(String iata) {
+		return this.airports.get(iata);
+	}
+	
+	
+	
+	
 }
