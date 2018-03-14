@@ -1,5 +1,6 @@
 package domain;
 
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,18 +17,30 @@ public class Graph {
 		this.airlines = new HashMap<String, Airline>();
 	}
 	
-	public void calculerItineraireMinimisantDistance(String src, String dest, String outputFile){
+	public void calculerItineraireMinimisantNombreVol(String src, String dest, String outputFile){
 		// BFS
 		this.bfsSearch(src, dest);
 	}
 	
-	public void calculerItineraireMinimisantNombreVol(String src, String dest, String outputFile){
+	public void calculerItineraireMinimisantDistance(String src, String dest, String outputFile){
 		// DIJKSTRA
 		this.dijkstra(src, dest);
 	}
 	
 	public boolean bfsSearch(String src, String dest) {
 		//TODO
+		ArrayDeque<String> queue = new ArrayDeque<String>();
+		queue.add(src);
+		
+		do {
+			src = queue.removeFirst();
+			Airport current = airports.get(src);
+			for (Route out : current.getRoutes()) {
+				
+			}
+			
+		} while (!queue.isEmpty());
+		
 		return false;
 	}
 	
