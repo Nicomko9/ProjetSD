@@ -19,14 +19,20 @@ public class Graph {
 	
 	public void calculerItineraireMinimisantNombreVol(String src, String dest, String outputFile){
 		// BFS
-		Map<String, String> enfants = new HashMap<String, String>();
+		ArrayDeque<Route> chemin = new ArrayDeque<Route>();
+		
 		System.out.println("Source : " + src + " \t Destination: " + dest);
-		if (bfsSearch(src, dest, enfants)) {
-			for (String enfant : enfants.values()) {
-				System.out.println("Enfant : " + enfant);
+		if (bfsSearch(src, dest, chemin)) {
+			// Affichage
+			System.out.println("\nLe chemin (" + chemin.size() + ") à suivre est : ");
+			for (Route route : chemin){
+				System.out.println("\t" + route.toString());
 			}
 		}
 		else System.out.println("Aucun chemin n'a été trouvé");
+		
+		//TODO Ecrire le chemin dans un le fichier xml 'outputFile'
+		
 	}
 	
 	public void calculerItineraireMinimisantDistance(String src, String dest, String outputFile){
@@ -34,26 +40,47 @@ public class Graph {
 		this.dijkstra(src, dest);
 	}
 	
-	public boolean bfsSearch(String src, String dest, Map<String, String> chemin) {
-		ArrayDeque<String> queue = new ArrayDeque<String>();
-		Map<String, String> enfants = new HashMap<String, String>();
-		queue.add(src);
-		enfants.put(src, null);
+	public boolean bfsSearch(String src, String dest, ArrayDeque<Route> chemin) {
+		ArrayDeque<Airport> queue = new ArrayDeque<Airport>();
+		Map<Airport, Airport> enfants = new HashMap<Airport, Airport>();
+		Airport airportSrc = this.airports.get(src);
+		Airport airportDest = this.airports.get(dest);
+		queue.add(airportSrc);
+		enfants.put(airportSrc, null);
 		
 		do {
-			System.out.println("First : " + queue.peekFirst());
-			src = queue.removeFirst();
-			// System.out.println("Queue : " + queue.getFirst());
-			System.out.println("Size : " + queue.size());
-			Airport current = this.airports.get(src);
-			// System.out.println("Current : " + current.getIata());
-			for (Route out : current.getRoutes()) {
-				if (!enfants.containsKey(out.getDestination().getIata())) {
-					enfants.put(out.getDestination().getIata(), src);
-					queue.addLast(out.getDestination().getIata());
+			System.out.println("First : " + queue.peekFirst().getIata());
+			airportSrc = queue.removeFirst();
+			
+			for (Route out : airportSrc.getRoutes()) {
+				if (!enfants.containsKey(out.getDestination())) {
+					enfants.put(out.getDestination(), airportSrc);
+					queue.addLast(out.getDestination());
 				}
-				if (out.getDestination().getIata().equals(dest))
+				
+				if (out.getDestination().getIata().equals(dest) || enfants.containsKey(airportDest)) {
+					Airport iataDest = airportDest;
+					chemin.add(out);
+					Airport airport = enfants.get(iataDest);
+					Airport child = enfants.get(airport);
+					
+					while (!child.equals(airportSrc)) {
+						System.out.println("\n" + airport.getIata());
+						for (Route route : child.getRoutes()) {
+							if (route.getDestination().equals(airport)) {
+								out = route;
+								break;
+							}
+						}
+						chemin.addFirst(out);
+						iataDest = airport;
+						airport = enfants.get(iataDest);
+						child = enfants.get(airport);
+						if (child == null)
+							break;
+					}
 					return true;
+				}
 			}
 			
 		} while (!queue.isEmpty());
