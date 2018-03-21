@@ -47,6 +47,11 @@ public class Airline {
 		} else if (!iata.equals(other.iata))
 			return false;
 		return true;
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "Airline [iata=" + iata + ", country=" + country + ", name=" + name + "]";
+	}
 	
 }

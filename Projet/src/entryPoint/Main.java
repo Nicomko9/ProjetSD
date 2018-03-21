@@ -16,7 +16,7 @@ public class Main {
 			SAXHandler userhandler = new SAXHandler();
 			saxParser.parse(inputFile, userhandler);
 			Graph g = userhandler.getGraph();
-			g.calculerItineraireMinimisantNombreVol("BRU", "PPT", "output2.xml");
+			g.calculerItineraireMinimisantNombreVol("LAX", "PPT", "output2.xml");
 			// g.calculerItineraireMinimisantDistance("BRU", "PPT", "output.xml");
 		} catch (Exception e) {
 			e.printStackTrace();

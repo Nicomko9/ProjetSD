@@ -9,6 +9,7 @@ public class Airport {
 	private String name;
 	private String city;
 	private String country;
+	private double traveledDistance;
 	
 	private double latitude;
 	private double longitude;
@@ -22,6 +23,7 @@ public class Airport {
 		this.country = country;
 	
 		this.routes = new HashSet<Route>();
+		this.traveledDistance = Double.MAX_VALUE;
 	}
 
 	public String getIata() {
@@ -61,6 +63,14 @@ public class Airport {
 	
 	public boolean addRoute(Route route) {
 		return this.routes.add(route);
+	}
+	
+	public double getTraveledDistance(){
+		return this.traveledDistance;
+	}
+	
+	public void setTraveledDistance(double traveledDistance){
+		this.traveledDistance = traveledDistance;
 	}
 
 	@Override
