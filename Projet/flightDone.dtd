@@ -1,19 +1,19 @@
-	<!ELEMENT source (#PCDATA)>
-	<!ATTLIST source iataCode CDATA #REQUIRED>
-	<!ATTLIST source pays CDATA #REQUIRED>
-	<!ATTLIST source ville CDATA #REQUIRED>
+	<!ELEMENT depart (#PCDATA)>
+	<!ATTLIST depart iataCode CDATA #REQUIRED>
+	<!ATTLIST depart pays CDATA #REQUIRED>
+	<!ATTLIST depart ville CDATA #REQUIRED>
 
 	<!ELEMENT destination (#PCDATA)>
 	<!ATTLIST destination iataCode CDATA #REQUIRED>
 	<!ATTLIST destination pays CDATA #REQUIRED>
 	<!ATTLIST destination ville CDATA #REQUIRED>
 
-	<!ELEMENT route (source, destination)>
-	<!ATTLIST route compagnie CDATA #REQUIRED>
-	<!ATTLIST route nombreKm CDATA #REQUIRED>
-	<!ATTLIST route numero CDATA #REQUIRED>
+	<!ELEMENT vol (source, destination)>
+	<!ATTLIST vol compagnie CDATA #REQUIRED>
+	<!ATTLIST vol nombreKm CDATA #REQUIRED>
+	<!ATTLIST vol numero CDATA #REQUIRED>
 
-	<!ELEMENT flight (route)+>
-	<!ATTLIST flight source CDATA #REQUIRED>
-	<!ATTLIST flight destination CDATA #REQUIRED>
-	<!ATTLIST flight distance CDATA #REQUIRED>
+	<!ELEMENT trajet (vol)+>
+	<!ATTLIST trajet depart CDATA #REQUIRED>
+	<!ATTLIST trajet destination CDATA #REQUIRED>
+	<!ATTLIST trajet distance CDATA #REQUIRED>

@@ -61,6 +61,14 @@ public class Airport {
 		return routes;
 	}
 	
+	public Route getRoute(Airport destination) {
+		for (Route route : routes) {
+			if (route.getDestination().equals(destination))
+				return route;
+		}
+		return null;
+	}
+	
 	public boolean addRoute(Route route) {
 		return this.routes.add(route);
 	}

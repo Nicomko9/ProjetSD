@@ -72,7 +72,7 @@ public class Route {
 
 	@Override
 	public String toString() {
-		return "Route with airline " + airline.getIata() + ", from " + source.getIata() + " to " + destination.getIata() + ".";
+		return "Route with " + airline.getName() + ", from " + source.getName() + " to " + destination.getName() + ".";
 	}
 	
 }

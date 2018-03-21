@@ -1,44 +1,70 @@
 package domain;
 
-import java.io.File;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
-public class DomParser{
+public class DomParser {
 
-   public static void main(String[] args) {
+	private Graph graph = new Graph();
 
-      try {
-         File xmlFile = new File("flight.xml");
-         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-         Document doc = dBuilder.parse(xmlFile);
-         doc.getDocumentElement().normalize();
-         NodeList flights = doc.getElementsByTagName("flight");
-         
-         for (int i = 0; i < flights.getLength(); i++) {
-            Node nFlight = flights.item(i);
-            Element eFlight = (Element) nFlight;
-            System.out.println("Trajet:\n\tAeroport de depart: " + eFlight.getAttribute("source") + "\nAeroport d'arrivee: " + eFlight.getAttribute("destination") + "\nDistance: " + eFlight.getAttribute("distance"));
-            NodeList routes = eFlight.getElementsByTagName("route");
-            System.out.println("Liste des vols pour cet itineraire:");
-            System.out.println("===========================================================");
-            for (int j = 0; j < routes.getLength(); j++){
-            	Node nRoute = routes.item(i);
-            	Element eRoute = (Element) nRoute;
-            	System.out.println("\tVol n°" + eRoute.getAttribute("number") + ", Compagnie aerienne: " + eRoute.getAttribute("airline") + ", distance: " + eRoute.getAttribute("distance") + "km");
-            	Element eSource = (Element) eRoute.getElementsByTagName("source");
-            	Element eDestination = (Element) eRoute.getElementsByTagName("destination");
-            	System.out.println("\tDepart depuis " + eSource.getTextContent() + " (" + eSource.getAttribute("city") + ", " + eSource.getAttribute("country"));
-            	System.out.println("\tArrive à " + eDestination.getTextContent() + " (" + eDestination.getAttribute("city") + ", " + eDestination.getAttribute("country") +"\n");
-            }         
-         }
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-   }
+	private Document doc;
+
+	public DomParser(Document doc) {
+		this.doc = doc;
+		fillGraph();
+	}
+
+	public Graph getGraph() {
+		return graph;
+	}
+
+	public void fillGraph() {
+		NodeList airports = doc.getElementsByTagName("airport");
+		for (int i = 0; i < airports.getLength(); i++) {
+			Node nAirport = airports.item(i);
+			Element eAirport = (Element) nAirport;
+			String iata = eAirport.getAttribute("iata");
+			String name = eAirport.getAttribute("name");
+			String city = eAirport.getAttribute("city");
+			String country = eAirport.getAttribute("country");
+			Airport airport = new Airport(iata, name, city, country);
+			
+			Node latitude = eAirport.getElementsByTagName("latitude").item(0);
+			Element eLatitude = (Element) latitude;
+			airport.setLatitude(Double.parseDouble(eLatitude.getTextContent()));
+			
+			Node longitude = eAirport.getElementsByTagName("longitude").item(0);
+			Element eLongitude = (Element) longitude;
+			airport.setLongitude(Double.parseDouble(eLongitude.getTextContent()));
+			graph.addObject(airport);
+		}
+
+		NodeList airlines = doc.getElementsByTagName("airline");
+		for (int i = 0; i < airlines.getLength(); i++) {
+			Node nAirline = airlines.item(i);
+			Element eAirline = (Element) nAirline;
+			String iata = eAirline.getAttribute("iata");
+			String country = eAirline.getAttribute("country");
+			String name = eAirline.getTextContent();
+			Airline airline = new Airline(iata, country);
+			airline.setName(name);
+			graph.addObject(airline);
+		}
+
+		NodeList routes = doc.getElementsByTagName("route");
+		for (int i = 0; i < routes.getLength(); i++) {
+			Node nRoute = routes.item(i);
+			Element eRoute = (Element) nRoute;
+			String strAirline = eRoute.getAttribute("airline");
+			String strSource = eRoute.getAttribute("source");
+			String strDestination = eRoute.getAttribute("destination");
+			Airline airline = graph.getAirline(strAirline);
+			Airport source = graph.getAirport(strSource);
+			Airport destination = graph.getAirport(strDestination);
+			Route route = new Route(airline, source, destination);
+			graph.addObject(route);
+		}
+	}
 }
